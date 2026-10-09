@@ -24,6 +24,7 @@ import {
   Crosshair,
   User,
   Flag,
+  ChevronDown,
 } from 'lucide-react';
 import { useApp } from '../../context/AppContext';
 import { CircularRescueRadar } from './CircularRescueRadar';
@@ -108,8 +109,9 @@ export const RadarMap: React.FC<RadarMapProps> = ({
   const [isDragging, setIsDragging] = useState(false);
   const dragStartRef = useRef({ mouseX: 0, mouseY: 0, panX: 0, panY: 0 });
 
-  // Focus effect for Rahul
+  // Focus effect for any courier
   const [focusedCourierId, setFocusedCourierId] = useState<string | null>(null);
+  const [showRiderMenu, setShowRiderMenu] = useState(false);
 
   const [filterLayer, setFilterLayer] = useState<{
     showPredictions: boolean;
@@ -138,11 +140,12 @@ export const RadarMap: React.FC<RadarMapProps> = ({
   const activeListings = rawListings;
 
   // Dynamic zoom for central corridor
+  // Dynamic projection bounds ensuring full metropolitan visibility
   const isCloseZoom = timeFilter === 'Next 1h' || mode === 'route';
-  const latMin = isCloseZoom ? 19.048 : 19.025;
-  const latMax = isCloseZoom ? 19.108 : 19.140;
-  const lngMin = isCloseZoom ? 72.835 : 72.825;
-  const lngMax = isCloseZoom ? 72.898 : 72.925;
+  const latMin = isCloseZoom ? 19.020 : 19.018;
+  const latMax = isCloseZoom ? 19.140 : 19.145;
+  const lngMin = isCloseZoom ? 72.818 : 72.815;
+  const lngMax = isCloseZoom ? 72.922 : 72.925;
 
   const projectCoords = (lat: number, lng: number) => {
     const x = ((lng - lngMin) / (lngMax - lngMin)) * 740 + 30;
@@ -160,7 +163,7 @@ export const RadarMap: React.FC<RadarMapProps> = ({
     return () => clearInterval(interval);
   }, []);
 
-  // Defined fleet of active riders heading directly to their destination shelters
+  // Defined fleet of active riders widely scattered across 5 distinct metropolitan sectors
   const couriers: ActiveCourier[] = [
     {
       id: 'vol-rahul',
@@ -168,10 +171,10 @@ export const RadarMap: React.FC<RadarMapProps> = ({
       vehicleType: 'Cargo E-Bike',
       vehicleIcon: 'bike',
       vehicleNumber: '#B-401 (Zero-Emission)',
-      origin: 'Urban Tiffin House (Khar West)',
-      destination: 'Hope Foundation Night Shelter',
-      startCoords: { lat: 19.0710, lng: 72.8390 },
-      destinationCoords: { lat: 19.0610, lng: 72.8460 },
+      origin: 'Khar West Artisanal Kitchens',
+      destination: 'Bandra Coastal Relief Shelter',
+      startCoords: { lat: 19.1080, lng: 72.8310 }, // Northwest / Coast
+      destinationCoords: { lat: 19.0480, lng: 72.8250 }, // Southwest Coast
       mealsCount: 125,
       speedKmH: 23,
       remainingKm: 0.8,
@@ -187,10 +190,10 @@ export const RadarMap: React.FC<RadarMapProps> = ({
       vehicleType: 'Insulated Electric Van',
       vehicleIcon: 'truck',
       vehicleNumber: '#V-108 (Thermal Boxed)',
-      origin: 'Grand Hyatt Kitchens (BKC)',
-      destination: 'St. Jude Child Care Shelter',
-      startCoords: { lat: 19.0760, lng: 72.8640 },
-      destinationCoords: { lat: 19.0580, lng: 72.8880 },
+      origin: 'BKC East Convention Halls',
+      destination: 'Sion Chunabhatti Community Center',
+      startCoords: { lat: 19.0960, lng: 72.8980 }, // East Corridor
+      destinationCoords: { lat: 19.0380, lng: 72.9120 }, // Southeast Corridor
       mealsCount: 180,
       speedKmH: 34,
       remainingKm: 1.4,
@@ -206,10 +209,10 @@ export const RadarMap: React.FC<RadarMapProps> = ({
       vehicleType: 'Delivery Scooter',
       vehicleIcon: 'bike',
       vehicleNumber: '#S-205 (Rapid Courier)',
-      origin: 'Spice Symphony Banquet',
-      destination: 'Mother Teresa Ashray Shelter',
-      startCoords: { lat: 19.0880, lng: 72.8460 },
-      destinationCoords: { lat: 19.0520, lng: 72.8510 },
+      origin: 'Santacruz North Catering Hub',
+      destination: 'Kalina Academic Night Shelter',
+      startCoords: { lat: 19.1280, lng: 72.8560 }, // North Suburbs
+      destinationCoords: { lat: 19.0820, lng: 72.8680 }, // North Central
       mealsCount: 45,
       speedKmH: 28,
       remainingKm: 2.1,
@@ -225,10 +228,10 @@ export const RadarMap: React.FC<RadarMapProps> = ({
       vehicleType: 'Rapid Cargo E-Bike',
       vehicleIcon: 'bike',
       vehicleNumber: '#B-309 (Pantry Express)',
-      origin: 'Bakers Delight Dadar',
-      destination: 'Bandra West Harbor Shelter',
-      startCoords: { lat: 19.0460, lng: 72.8420 },
-      destinationCoords: { lat: 19.0660, lng: 72.8310 },
+      origin: 'Dadar South Bakery Terminal',
+      destination: 'Mahim Seva Community Kitchen',
+      startCoords: { lat: 19.0260, lng: 72.8460 }, // South Sector
+      destinationCoords: { lat: 19.0620, lng: 72.8580 }, // South-Central
       mealsCount: 60,
       speedKmH: 21,
       remainingKm: 1.1,
@@ -237,6 +240,25 @@ export const RadarMap: React.FC<RadarMapProps> = ({
       badgeClass: 'bg-rose-100 text-rose-800 border-rose-200',
       ringClass: 'ring-rose-300',
       pathStroke: '#F43F5E',
+    },
+    {
+      id: 'vol-vikram',
+      name: 'Vikram Joshi',
+      vehicleType: 'EV Heavy Cargo Van',
+      vehicleIcon: 'truck',
+      vehicleNumber: '#V-304 (Heavy Dispatch)',
+      origin: 'Powai Tech Mega Campus',
+      destination: 'Annam Welfare Food Bank',
+      startCoords: { lat: 19.1350, lng: 72.9060 }, // Northeast Powai
+      destinationCoords: { lat: 19.0880, lng: 72.8840 }, // Mid-East Kurla
+      mealsCount: 210,
+      speedKmH: 38,
+      remainingKm: 1.8,
+      etaMins: 6,
+      status: 'En Route to Shelter Dropoff',
+      badgeClass: 'bg-emerald-100 text-emerald-800 border-emerald-200',
+      ringClass: 'ring-emerald-300',
+      pathStroke: '#10B981',
     },
   ];
 
@@ -303,19 +325,21 @@ export const RadarMap: React.FC<RadarMapProps> = ({
     setIsDragging(false);
   };
 
-  // Center Camera Directly on Rahul Verma heading to destination
-  const handleFocusOnRahul = (e?: React.MouseEvent) => {
+  // Center Camera Directly on any selected rider
+  const handleFocusOnCourier = (courier: ActiveCourier, index: number, e?: React.MouseEvent) => {
     if (e) e.stopPropagation();
-    const rahul = couriers[0];
-    const { pt } = getCourierCurrentCoords(rahul, 0);
+    const offsets = [0.15, 0.58, 0.82, 0.38, 0.72];
+    const offset = offsets[index % offsets.length];
+    const { pt } = getCourierCurrentCoords(courier, offset);
     const targetPanX = -((pt.x - 400) / 400) * 80;
     const targetPanY = -((pt.y - 300) / 300) * 60;
     setMapPan({
       x: Math.max(-120, Math.min(120, targetPanX)),
       y: Math.max(-90, Math.min(90, targetPanY)),
     });
-    setFocusedCourierId(rahul.id);
-    setTimeout(() => setFocusedCourierId(null), 2500);
+    setFocusedCourierId(courier.id);
+    setSelectedCourier(courier);
+    setTimeout(() => setFocusedCourierId(null), 3000);
   };
 
   return (
@@ -331,23 +355,72 @@ export const RadarMap: React.FC<RadarMapProps> = ({
           <div className="flex items-center gap-1.5 min-w-0">
             <span className="text-xs font-bold text-slate-800 truncate">Interactive Transit Radar</span>
             <span className="text-[10px] font-mono text-slate-500 hidden sm:inline truncate">
-              · 4 Couriers Heading to Destinations
+              · {couriers.length} Active Rescue Riders
             </span>
           </div>
         </div>
 
-        {/* Action Controls: Courier Focus, Pan Toggle & View Switcher */}
+        {/* Action Controls: Multi-Rider Focus, Pan Toggle & View Switcher */}
         <div className="flex items-center gap-2 shrink-0">
           {activeDisplay === 'grid' && (
-            <button
-              type="button"
-              onClick={handleFocusOnRahul}
-              className="px-2.5 py-1 rounded-xl bg-purple-50 hover:bg-purple-100 text-purple-700 font-bold text-[11px] border border-purple-200 shadow-2xs flex items-center gap-1.5 cursor-pointer transition-all transform active:scale-95"
-              title="Locate Rahul Verma heading to Hope Foundation Shelter"
-            >
-              <span className="w-2 h-2 rounded-full bg-purple-500 animate-ping" />
-              <span>Locate Rahul</span>
-            </button>
+            <div className="relative">
+              <button
+                type="button"
+                onClick={() => setShowRiderMenu(!showRiderMenu)}
+                className="px-2.5 py-1 rounded-xl bg-purple-50 hover:bg-purple-100 text-purple-700 font-bold text-[11px] border border-purple-200 shadow-2xs flex items-center gap-1.5 cursor-pointer transition-all transform active:scale-95"
+                title="Locate any active rescue rider across the city"
+              >
+                <span className="w-2 h-2 rounded-full bg-purple-500 animate-ping" />
+                <span>Locate Rider</span>
+                <ChevronDown className={`w-3 h-3 text-purple-600 transition-transform ${showRiderMenu ? 'rotate-180' : ''}`} />
+              </button>
+
+              <AnimatePresence>
+                {showRiderMenu && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 6, scale: 0.95 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: 6, scale: 0.95 }}
+                    className="absolute right-0 mt-1.5 w-60 rounded-2xl bg-white border border-slate-200 shadow-xl p-1.5 z-50 text-xs space-y-0.5"
+                  >
+                    <div className="px-2 py-1 text-[9px] uppercase font-mono text-slate-400 font-bold tracking-wider">
+                      Select Active Rider ({couriers.length})
+                    </div>
+                    {couriers.map((courier, idx) => {
+                      const VehicleIcon = courier.vehicleIcon === 'bike' ? Bike : Truck;
+                      return (
+                        <button
+                          key={courier.id}
+                          type="button"
+                          onClick={() => {
+                            handleFocusOnCourier(courier, idx);
+                            setShowRiderMenu(false);
+                          }}
+                          className="w-full flex items-center justify-between p-2 rounded-xl hover:bg-purple-50/80 transition-colors text-left cursor-pointer group"
+                        >
+                          <div className="flex items-center gap-2 min-w-0">
+                            <div className="w-6 h-6 rounded-lg bg-slate-100 group-hover:bg-purple-100 text-slate-700 group-hover:text-purple-700 flex items-center justify-center shrink-0">
+                              <VehicleIcon className="w-3.5 h-3.5" />
+                            </div>
+                            <div className="min-w-0">
+                              <div className="font-bold text-slate-800 text-xs truncate group-hover:text-purple-900">
+                                {courier.name}
+                              </div>
+                              <div className="text-[10px] text-slate-500 truncate">
+                                → {courier.destination.split(' ')[0]} {courier.destination.split(' ')[1] || ''}
+                              </div>
+                            </div>
+                          </div>
+                          <span className="text-[10px] font-mono text-purple-600 font-semibold shrink-0">
+                            {courier.speedKmH}km/h
+                          </span>
+                        </button>
+                      );
+                    })}
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
           )}
 
           {activeDisplay === 'grid' && (
@@ -609,10 +682,10 @@ export const RadarMap: React.FC<RadarMapProps> = ({
               {/* 2. ACTIVE COURIERS TRAVELING TOWARD DESTINATION */}
               {filterLayer.showCouriers &&
                 couriers.map((c, idx) => {
-                  const offset = idx * 0.22;
+                  const offsets = [0.15, 0.58, 0.82, 0.38, 0.72];
+                  const offset = offsets[idx % offsets.length];
                   const { pt, progressPercent } = getCourierCurrentCoords(c, offset);
-                  const isRahul = c.id === 'vol-rahul';
-                  const isFocused = focusedCourierId === c.id;
+                  const isFocused = focusedCourierId === c.id || selectedCourier?.id === c.id;
                   const leftPercent = (pt.x / 800) * 100;
                   const topPercent = (pt.y / 600) * 100;
 
@@ -627,7 +700,7 @@ export const RadarMap: React.FC<RadarMapProps> = ({
                       onClick={() => setSelectedCourier(c)}
                     >
                       {/* Luminous Pulsing Beacon */}
-                      <span className={`absolute -inset-3.5 rounded-full ${isRahul ? 'bg-purple-300/60 animate-ping' : 'bg-sky-200/50 animate-pulse'} pointer-events-none`} />
+                      <span className={`absolute -inset-3.5 rounded-full ${isFocused ? 'bg-purple-300/60 animate-ping' : 'bg-sky-200/50 animate-pulse'} pointer-events-none`} />
                       {isFocused && (
                         <span className="absolute -inset-7 rounded-full bg-purple-400/50 animate-ping pointer-events-none" />
                       )}
@@ -635,8 +708,8 @@ export const RadarMap: React.FC<RadarMapProps> = ({
                       {/* Clean White & Pastel Courier Pill */}
                       <div
                         className={`relative flex items-center gap-2 px-3 py-1.5 rounded-2xl bg-white border-2 ${
-                          isRahul
-                            ? 'border-purple-400 shadow-md ring-2 ring-purple-100'
+                          isFocused
+                            ? 'border-purple-500 shadow-md ring-2 ring-purple-100'
                             : 'border-slate-200 shadow-sm hover:border-sky-400'
                         } text-slate-800 transition-all transform hover:scale-110`}
                       >
@@ -835,49 +908,6 @@ export const RadarMap: React.FC<RadarMapProps> = ({
               </div>
             </div>
           )}
-
-          {/* PERSISTENT FLOATING COURIER STATUS CARD (RAHUL IN TRANSIT) */}
-          <div className="absolute top-3 left-3 z-30 p-3 rounded-2xl bg-white/95 border border-purple-200 shadow-md max-w-[270px] sm:max-w-[300px] space-y-1.5 text-slate-800">
-            <div className="flex items-center justify-between gap-2">
-              <div className="flex items-center gap-1.5 min-w-0">
-                <span className="w-2 h-2 rounded-full bg-purple-500 animate-ping shrink-0" />
-                <span className="text-xs font-bold text-slate-900 truncate">
-                  Rahul Verma
-                </span>
-              </div>
-              <span className="px-1.5 py-0.2 rounded-md bg-purple-50 text-purple-700 border border-purple-200 text-[9px] font-mono font-bold shrink-0">
-                🚲 Cargo E-Bike
-              </span>
-            </div>
-
-            <div className="text-[10px] text-slate-600 font-mono leading-tight space-y-0.5">
-              <div>
-                Heading to: <strong className="text-purple-700">Hope Foundation Shelter</strong>
-              </div>
-              <div>
-                Speed: <strong>23 km/h</strong> · Payload: <strong>125 meals</strong> · ETA: <strong>3 mins</strong>
-              </div>
-            </div>
-
-            <div className="flex items-center gap-1.5 pt-1">
-              <button
-                type="button"
-                onClick={handleFocusOnRahul}
-                className="flex-1 py-1 px-2 rounded-xl bg-purple-600 hover:bg-purple-700 text-white font-bold text-[10px] cursor-pointer transition-all shadow-xs flex items-center justify-center gap-1"
-              >
-                <Crosshair className="w-3 h-3" />
-                <span>Center on Rahul</span>
-              </button>
-
-              <button
-                type="button"
-                onClick={() => setSelectedCourier(couriers[0])}
-                className="py-1 px-2.5 rounded-xl bg-slate-50 hover:bg-slate-100 text-slate-700 border border-slate-200 text-[10px] font-semibold cursor-pointer transition-all"
-              >
-                Details
-              </button>
-            </div>
-          </div>
 
           {/* INTERACTIVE POPUP MODAL: COURIER TELEMETRY & ROUTE PROGRESS (NO USER VEHICLE TOGGLE) */}
           <AnimatePresence>
