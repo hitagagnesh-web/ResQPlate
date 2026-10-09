@@ -1,0 +1,8 @@
+{
+  "name": "Remix Remix Remix ResQPlate — AI Food Surplus Prediction \u0026 Rescue Radar",
+  "description": "Next-generation predictive food rescue platform that forecasts surplus before it becomes waste, matches donors with NGOs \u0026 volunteers, optimizes multi-stop routes, and tracks verifiable food passports.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

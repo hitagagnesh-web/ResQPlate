@@ -1,0 +1,477 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+
+    /* Crisp White & Pastel Modern Palette */
+    --color-surface-white: #FFFFFF;
+    --color-canvas: #F8FAFC;
+    --color-border-subtle: #E2E8F0;
+    --color-text-primary: #0F172A;
+    --color-text-secondary: #475569;
+    --color-text-muted: #64748B;
+
+    /* Fresh Pastel Accent System */
+    --color-pastel-mint: #ECFDF5;
+    --color-pastel-mint-border: #A7F3D0;
+    --color-pastel-mint-text: #065F46;
+    --color-pastel-mint-primary: #10B981;
+
+    --color-pastel-sky: #F0F9FF;
+    --color-pastel-sky-border: #BAE6FD;
+    --color-pastel-sky-text: #0369A1;
+    --color-pastel-sky-primary: #0284C7;
+
+    --color-pastel-lavender: #F5F3FF;
+    --color-pastel-lavender-border: #DDD6FE;
+    --color-pastel-lavender-text: #5B21B6;
+    --color-pastel-lavender-primary: #8B5CF6;
+
+    --color-pastel-peach: #FFF7ED;
+    --color-pastel-peach-border: #FED7AA;
+    --color-pastel-peach-text: #9A3412;
+    --color-pastel-peach-primary: #F97316;
+
+    --color-pastel-rose: #FFF1F2;
+    --color-pastel-rose-border: #FECDD3;
+    --color-pastel-rose-text: #9F1239;
+    --color-pastel-rose-primary: #F43F5E;
+
+    --color-pastel-butter: #FEFCE8;
+    --color-pastel-butter-border: #FEF08A;
+    --color-pastel-butter-text: #854D0E;
+  }
+
+  body {
+    font-family: var(--font-sans);
+    background-color: #F8FAFC;
+    color: #0F172A;
+    overflow-x: hidden;
+  }
+}
+
+/* 1. Pastel Animated Background Blob Drift Keyframes */
+@keyframes drift-blob-1 {
+  0% {
+    transform: translate(0px, 0px) scale(1);
+  }
+  33% {
+    transform: translate(50px, -40px) scale(1.08);
+  }
+  66% {
+    transform: translate(-35px, 35px) scale(0.95);
+  }
+  100% {
+    transform: translate(0px, 0px) scale(1);
+  }
+}
+
+@keyframes drift-blob-2 {
+  0% {
+    transform: translate(0px, 0px) scale(1);
+  }
+  33% {
+    transform: translate(-55px, 40px) scale(1.1);
+  }
+  66% {
+    transform: translate(40px, -30px) scale(0.92);
+  }
+  100% {
+    transform: translate(0px, 0px) scale(1);
+  }
+}
+
+@keyframes drift-blob-3 {
+  0% {
+    transform: translate(0px, 0px) scale(1);
+  }
+  50% {
+    transform: translate(40px, 50px) scale(1.06);
+  }
+  100% {
+    transform: translate(0px, 0px) scale(1);
+  }
+}
+
+@keyframes drift-blob-4 {
+  0% {
+    transform: translate(0px, 0px) scale(0.95);
+    opacity: 0.35;
+  }
+  50% {
+    transform: translate(-45px, -35px) scale(1.12);
+    opacity: 0.55;
+  }
+  100% {
+    transform: translate(0px, 0px) scale(0.95);
+    opacity: 0.35;
+  }
+}
+
+/* 2. Gentle Floating and Sway Animations for Decorative Elements */
+@keyframes float-gentle {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-8px) rotate(1.5deg);
+  }
+}
+
+@keyframes float-reverse {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(8px) rotate(-1.5deg);
+  }
+}
+
+@keyframes float-sway {
+  0%, 100% {
+    transform: translate(0px, 0px) rotate(0deg);
+  }
+  33% {
+    transform: translate(4px, -6px) rotate(2deg);
+  }
+  66% {
+    transform: translate(-4px, 4px) rotate(-1.5deg);
+  }
+}
+
+/* 3. Signature Food Rescue Radar Animations in Pastel Palette */
+@keyframes radar-sweep-pastel {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes radar-ping-mint {
+  0% {
+    transform: scale(0.85);
+    opacity: 0.85;
+  }
+  50% {
+    transform: scale(1.8);
+    opacity: 0.35;
+  }
+  100% {
+    transform: scale(2.6);
+    opacity: 0;
+  }
+}
+
+@keyframes radar-ping-rose {
+  0% {
+    transform: scale(0.9);
+    opacity: 0.85;
+  }
+  60% {
+    transform: scale(2.1);
+    opacity: 0.3;
+  }
+  100% {
+    transform: scale(2.8);
+    opacity: 0;
+  }
+}
+
+@keyframes marker-glow-pastel {
+  0%, 100% {
+    filter: drop-shadow(0 0 4px rgba(16, 185, 129, 0.45));
+  }
+  50% {
+    filter: drop-shadow(0 0 10px rgba(14, 165, 233, 0.6));
+  }
+}
+
+.animate-drift-1 {
+  animation: drift-blob-1 26s ease-in-out infinite;
+}
+
+.animate-drift-2 {
+  animation: drift-blob-2 30s ease-in-out infinite;
+}
+
+.animate-drift-3 {
+  animation: drift-blob-3 34s ease-in-out infinite;
+}
+
+.animate-drift-4 {
+  animation: drift-blob-4 22s ease-in-out infinite;
+}
+
+.animate-float-gentle {
+  animation: float-gentle 6s ease-in-out infinite;
+}
+
+.animate-float-reverse {
+  animation: float-reverse 7s ease-in-out infinite;
+}
+
+.animate-float-sway {
+  animation: float-sway 8s ease-in-out infinite;
+}
+
+.animate-radar-sweep-pastel {
+  animation: radar-sweep-pastel 8s linear infinite;
+}
+
+.animate-radar-sweep-fast {
+  animation: radar-sweep-pastel 4.5s linear infinite;
+}
+
+.animate-radar-ping-mint {
+  animation: radar-ping-mint 2.8s cubic-bezier(0.2, 0.6, 0.3, 1) infinite;
+}
+
+.animate-radar-ping-rose {
+  animation: radar-ping-rose 2.2s cubic-bezier(0.2, 0.6, 0.3, 1) infinite;
+}
+
+.animate-marker-glow {
+  animation: marker-glow-pastel 3s ease-in-out infinite;
+}
+
+@keyframes map-route-dash {
+  to {
+    stroke-dashoffset: -100;
+  }
+}
+
+.animate-route-flow {
+  animation: map-route-dash 3s linear infinite;
+}
+
+/* Accessibility: Respect Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  .animate-drift-1,
+  .animate-drift-2,
+  .animate-drift-3,
+  .animate-drift-4,
+  .animate-float-gentle,
+  .animate-float-reverse,
+  .animate-float-sway,
+  .animate-radar-sweep-pastel,
+  .animate-radar-sweep-fast,
+  .animate-radar-ping-mint,
+  .animate-radar-ping-rose,
+  .animate-marker-glow,
+  .animate-route-flow {
+    animation: none !important;
+    transform: none !important;
+  }
+}
+
+/* Custom scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #F1F5F9;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #CBD5E1;
+  border-radius: 9999px;
+  border: 1px solid #F1F5F9;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94A3B8;
+}
+
+/* =========================================================================
+   DARK THEME PALETTE & OVERRIDES (Obsidian Black, Neon Purple, Cyber Blue)
+   ========================================================================= */
+html.dark {
+  color-scheme: dark;
+}
+
+html.dark body {
+  background-color: #060814 !important;
+  color: #F8FAFC !important;
+}
+
+/* Dedicated QR Code container exemption - ALWAYS high-contrast white & crisp black */
+.qr-code-canvas {
+  background-color: #FFFFFF !important;
+  color: #0F172A !important;
+}
+.qr-code-canvas * {
+  color: #0F172A;
+}
+
+/* Card Surfaces in Dark Theme - Obsidian with Purple & Blue Tints */
+html.dark .bg-white:not(.qr-code-canvas):not(.qr-code-canvas *) {
+  background-color: #090D22 !important;
+}
+html.dark [class*="bg-white/"]:not(.qr-code-canvas):not(.qr-code-canvas *) {
+  background-color: rgba(9, 13, 34, 0.95) !important;
+}
+
+html.dark .bg-slate-50:not(.qr-code-canvas):not(.qr-code-canvas *) {
+  background-color: #070A1A !important;
+}
+html.dark [class*="bg-slate-50/"]:not(.qr-code-canvas):not(.qr-code-canvas *) {
+  background-color: rgba(7, 10, 26, 0.94) !important;
+}
+
+html.dark .bg-slate-100 {
+  background-color: #0E1430 !important;
+}
+
+html.dark .bg-slate-200 {
+  background-color: #162045 !important;
+}
+
+/* Form inputs & selects */
+html.dark select,
+html.dark input,
+html.dark textarea {
+  background-color: #0D132D !important;
+  color: #F8FAFC !important;
+  border-color: #202B52 !important;
+}
+
+/* Borders in Dark Theme - Sleek Midnight Indigo/Blue */
+html.dark .border-slate-200,
+html.dark .border-slate-200\/70,
+html.dark .border-slate-200\/80,
+html.dark .border-slate-200\/90,
+html.dark .border-slate-100 {
+  border-color: #1E2648 !important;
+}
+
+html.dark .border-slate-300 {
+  border-color: #263462 !important;
+}
+
+/* Text Hierarchy in Dark Theme - Crisp, High Contrast, Fully Visible */
+html.dark .text-slate-900:not(.qr-code-canvas *) {
+  color: #F8FAFC !important;
+}
+
+html.dark .text-slate-800:not(.qr-code-canvas *) {
+  color: #F1F5F9 !important;
+}
+
+html.dark .text-slate-700:not(.qr-code-canvas *) {
+  color: #E2E8F0 !important;
+}
+
+html.dark .text-slate-600:not(.qr-code-canvas *) {
+  color: #CBD5E1 !important;
+}
+
+html.dark .text-slate-500:not(.qr-code-canvas *) {
+  color: #94A3B8 !important;
+}
+
+html.dark .text-slate-400:not(.qr-code-canvas *) {
+  color: #64748B !important;
+}
+
+/* Luminous Pastel Accents in Dark Theme */
+html.dark .bg-emerald-50,
+html.dark .bg-emerald-50\/30,
+html.dark .bg-emerald-50\/50,
+html.dark .bg-emerald-50\/70,
+html.dark .bg-emerald-50\/80 {
+  background-color: rgba(16, 185, 129, 0.14) !important;
+}
+html.dark .border-emerald-200,
+html.dark .border-emerald-100 {
+  border-color: rgba(16, 185, 129, 0.4) !important;
+}
+html.dark .text-emerald-700,
+html.dark .text-emerald-800 {
+  color: #34D399 !important;
+}
+html.dark .text-emerald-900 {
+  color: #6EE7B7 !important;
+}
+
+html.dark .bg-sky-50,
+html.dark .bg-sky-50\/30,
+html.dark .bg-sky-50\/50,
+html.dark .bg-sky-50\/70,
+html.dark .bg-sky-50\/80 {
+  background-color: rgba(14, 165, 233, 0.14) !important;
+}
+html.dark .border-sky-200,
+html.dark .border-sky-100 {
+  border-color: rgba(14, 165, 233, 0.4) !important;
+}
+html.dark .text-sky-700,
+html.dark .text-sky-800 {
+  color: #38BDF8 !important;
+}
+html.dark .text-sky-900 {
+  color: #7DD3FC !important;
+}
+
+html.dark .bg-purple-50,
+html.dark .bg-purple-50\/30,
+html.dark .bg-purple-50\/50,
+html.dark .bg-purple-50\/70,
+html.dark .bg-purple-50\/80 {
+  background-color: rgba(139, 92, 246, 0.14) !important;
+}
+html.dark .border-purple-200,
+html.dark .border-purple-100 {
+  border-color: rgba(139, 92, 246, 0.4) !important;
+}
+html.dark .text-purple-700,
+html.dark .text-purple-800 {
+  color: #C084FC !important;
+}
+
+html.dark .bg-orange-50,
+html.dark .bg-orange-50\/50,
+html.dark .bg-orange-50\/70,
+html.dark .bg-orange-50\/80 {
+  background-color: rgba(249, 115, 22, 0.14) !important;
+}
+html.dark .border-orange-200,
+html.dark .border-orange-100 {
+  border-color: rgba(249, 115, 22, 0.4) !important;
+}
+html.dark .text-orange-700,
+html.dark .text-orange-800 {
+  color: #FB923C !important;
+}
+html.dark .text-orange-900 {
+  color: #FDBA74 !important;
+}
+
+html.dark .bg-rose-50,
+html.dark .bg-rose-50\/50,
+html.dark .bg-rose-50\/70,
+html.dark .bg-rose-50\/80 {
+  background-color: rgba(244, 63, 94, 0.14) !important;
+}
+html.dark .border-rose-200,
+html.dark .border-rose-100 {
+  border-color: rgba(244, 63, 94, 0.4) !important;
+}
+html.dark .text-rose-700 {
+  color: #FB7185 !important;
+}
+
+html.dark .bg-amber-50 {
+  background-color: rgba(245, 158, 11, 0.14) !important;
+}
+html.dark .border-amber-200 {
+  border-color: rgba(245, 158, 11, 0.4) !important;
+}
+html.dark .text-amber-700 {
+  color: #FBBF24 !important;
+}
